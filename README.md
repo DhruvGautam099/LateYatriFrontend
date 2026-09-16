@@ -1,32 +1,25 @@
-# React + TypeScript + Vite
+# ETAMK2 (LateYatri) Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+This is the frontend application for the ETAMK2 (LateYatri) project, built with React, Vite, and TailwindCSS.
 
-Currently, two official plugins are available:
+## What is Working (Implemented Features)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+The following features and pages are currently implemented and functional in the project:
 
-## React Compiler
+### Public Pages
+- **Home:** Landing page of the application.
+- **Login:** User authentication login page.
+- **Register:** New user registration page.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### User Dashboard & Features
+- **Dashboard:** Main user dashboard displaying an overview.
+- **Live Tracking:** Real-time tracking of train status and location.
+- **Predict ETA:** Tool to predict the Estimated Time of Arrival for trains.
+- **History:** View past user activity and tracking history.
+- **Analytics:** Data analytics and visualizations for the user.
 
-## Expanding the Oxlint configuration
+### Admin Features
+- **Admin Dashboard:** A protected dashboard area restricted to admin users only.
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+---
+*Note: Some features like Route Details, Search, Favorites, Notifications, and Settings are currently placeholders and are not yet fully implemented.*
