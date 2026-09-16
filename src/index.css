@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @custom-variant dark (&:is(.dark *));
 
+@theme {
+  --color-railway-blue: #1976d2;
+  --color-railway-accent: #f57c00;
+}
 @layer base {
   body {
     @apply bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-50;

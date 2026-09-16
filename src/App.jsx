@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
+import './App.css';
 
 import PublicLayout from './layouts/PublicLayout';
 import UserLayout from './layouts/UserLayout';
