@@ -1,0 +1,226 @@
+Backend API Routes Specification
+================================
+
+Below is a detailed list of the backend routes your application expects to be working on localhost:8080. It includes the expected JSON formats for requests (what to send) and responses (what to receive) based on the frontend data structure.
+
+--------------------------------------------------
+1. TRAINS & LOCATIONS
+--------------------------------------------------
+
+1A. GET /api/trains
+- Purpose: Fetch a list of all trains.
+- Request Payload: None
+- Expected Response (Array of Objects):
+[
+  {
+    "id": 1,
+    "trainNumber": "12002",
+    "trainName": "NDLS - BPL S",
+    "trainType": "Shtb",
+    "source": "NDLS",
+    "destination": "HBJ"
+  },
+  ...
+]
+
+1B. GET /api/trains/:trainNumber
+- Purpose: Fetch details of a specific train.
+- Request Payload: None
+- Expected Response (Object):
+{
+  "id": 1,
+  "trainNumber": "12002",
+  "trainName": "NDLS - BPL S",
+  "trainType": "Shtb",
+  "source": "NDLS",
+  "destination": "HBJ"
+}
+
+1C. GET /api/trains/:trainNumber/status
+- Purpose: Fetch the real-time status/location of a train.
+- Request Payload: None
+- Expected Response (Object):
+{
+  "trainNumber": "12002",
+  "trainName": "NDLS - BPL S",
+  "currentLatitude": 25.4484,
+  "currentLongitude": 78.5830,
+  "speed": 82.5,
+  "currentDelay": 15,
+  "lastUpdated": "2026-09-17T12:00:00.000Z",
+  "predictedArrival": "2026-09-17T13:05:00.000Z",
+  "predictedDelay": 90
+}
+
+1D. GET /api/trains/:trainNumber/location
+- Purpose: Fetch the current location only (same or subset of status).
+- Request Payload: None
+- Expected Response (Object): 
+{ "latitude": 25.4484, "longitude": 78.5830 } 
+
+1E. GET /api/trains/:trainNumber/location/history
+- Purpose: Fetch recent location data points to draw a path.
+- Request Payload: None
+- Expected Response (Array of Objects):
+[
+  { 
+    "latitude": 27.1592, 
+    "longitude": 77.9942, 
+    "speed": 75, 
+    "currentDelay": 0, 
+    "timestamp": "2026-09-17T11:00:00.000Z" 
+  },
+  ...
+]
+
+--------------------------------------------------
+2. STATIONS & ROUTES
+--------------------------------------------------
+
+2A. GET /api/stations
+- Purpose: Fetch a list of all available stations.
+- Request Payload: None
+- Expected Response (Array of Objects):
+[
+  {
+    "id": 1,
+    "stationCode": "NDLS",
+    "stationName": "New Delhi",
+    "latitude": 28.6429,
+    "longitude": 77.2191
+  },
+  ...
+]
+
+2B. GET /api/routes/train/:trainNumber
+- Purpose: Fetch the route (stops/stations) for a specific train.
+- Request Payload: None
+- Expected Response (Array of Objects):
+[
+  {
+    "sequenceNumber": 1,
+    "scheduledArrival": "06:00:00",
+    "scheduledDeparture": "06:00:00",
+    "distanceFromPrevious": 0,
+    "station": {
+      "id": 1,
+      "stationCode": "NDLS",
+      "stationName": "New Delhi",
+      "latitude": 28.6429,
+      "longitude": 77.2191
+    }
+  },
+  ...
+]
+
+--------------------------------------------------
+3. HISTORY & ETA
+--------------------------------------------------
+
+3A. POST /api/eta/predict
+- Purpose: Predict the ETA for a train at a specific station.
+- Request Payload (Object):
+{
+  "trainNumber": "12002",
+  "stationCode": "BPL"
+}
+- Expected Response (Object):
+{
+  "id": 42,
+  "predictedArrival": "2026-09-17T13:05:00.000Z",
+  "predictedDelay": 90,
+  "predictedEtaMinutes": 65.73,
+  "predictionTime": "2026-09-17T12:00:00.000Z",
+  "station": { ...stationObject },
+  "train": { ...trainObject }
+}
+
+3B. GET /api/history/train/:trainNumber
+- Purpose: Fetch journey history of a specific train.
+- Request Payload: None
+- Expected Response (Array of Objects):
+[
+  {
+    "id": 1,
+    "journeyDate": "2026-09-08",
+    "station": { ...stationObject },
+    "train": { ...trainObject },
+    "scheduledArrival": "13:50:00",
+    "actualArrival": "14:10:00",
+    "arrivalDelay": 20,
+    "scheduledDeparture": "13:55:00",
+    "actualDeparture": "14:15:00",
+    "departureDelay": 20
+  }
+]
+
+3C. GET /api/history/station/:stationCode
+- Purpose: Fetch journey history of a specific station.
+- Request Payload: None
+- Expected Response (Array of Objects): Similar structure as 3B.
+
+--------------------------------------------------
+4. AUTHENTICATION
+--------------------------------------------------
+
+4A. POST /api/auth/login
+- Purpose: Authenticate user and return a token.
+- Request Payload (Object):
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+- Expected Response (Object):
+{
+  "token": "jwt-token-string",
+  "user": {
+    "id": 1,
+    "name": "Test User",
+    "email": "user@example.com",
+    "role": "USER"
+  }
+}
+
+4B. POST /api/auth/register
+- Purpose: Register a new user and return a token.
+- Request Payload (Object):
+{
+  "name": "Test User",
+  "email": "user@example.com",
+  "password": "password123"
+}
+- Expected Response (Object): Similar structure as 4A.
+
+--------------------------------------------------
+5. ADMIN (TRAIN MANAGEMENT)
+--------------------------------------------------
+
+5A. GET /api/admin/trains
+- Purpose: Fetch all trains for admin management.
+- Request Payload: None
+- Expected Response (Array of Objects): Same as 1A.
+
+5B. POST /api/admin/trains
+- Purpose: Create a new train.
+- Request Payload (Object):
+{
+  "trainNumber": "12002",
+  "trainName": "NDLS - BPL S",
+  "trainType": "Shtb",
+  "source": "NDLS",
+  "destination": "HBJ"
+}
+- Expected Response (Object): The created train object with an ID.
+
+5C. PUT /api/admin/trains/:id
+- Purpose: Update an existing train.
+- Request Payload (Object): The fields to update.
+- Expected Response (Object): The updated train object.
+
+5D. DELETE /api/admin/trains/:id
+- Purpose: Delete a train.
+- Request Payload: None
+- Expected Response (Object):
+{
+  "success": true
+}

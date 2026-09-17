@@ -9,10 +9,12 @@ import UserLayout from './layouts/UserLayout';
 import ProtectedRoute from './components/common/ProtectedRoute';
 
 import {
-  Landing, RouteDetails,
+  Landing,
   Search, Favorites,
   Notifications, Settings } from
 './pages/Placeholders';
+
+import RouteDetails from './pages/user/RouteDetails';
 
 import Login from './pages/user/Login';
 import Register from './pages/user/Register';
